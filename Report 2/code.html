@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>General Knowledge Quiz</title>
+
+<style>
+
+body{
+    margin:0;
+    padding:40px;
+    font-family:Arial, sans-serif;
+    background: linear-gradient(135deg,#74ebd5,#ACB6E5);
+}
+
+/* COVER PAGE */
+#cover{
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    flex-direction:column;
+}
+
+#cover input{
+    padding:10px;
+    font-size:16px;
+    border-radius:5px;
+    border:none;
+    margin:10px;
+}
+
+#cover button{
+    padding:10px 20px;
+    font-size:16px;
+    border:none;
+    border-radius:5px;
+    background:#4CAF50;
+    color:white;
+    cursor:pointer;
+}
+
+/* ORIGINAL QUIZ */
+.quiz-box{
+    display:none;
+    width:600px;
+    margin:auto;
+    background:white;
+    border-radius:12px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.2);
+}
+
+h1{
+    text-align:center;
+    border-bottom:2px solid #ddd;
+    padding-bottom:10px;
+}
+
+.timer{
+    text-align:right;
+    font-weight:bold;
+    color:red;
+}
+
+.question{
+    background:#f9f9f9;
+    border-radius:8px;
+    padding:15px;
+    margin:20px 0;
+}
+
+button{
+    background:#4CAF50;
+    color:white;
+    border:none;
+    padding:12px 25px;
+    font-size:16px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#45a049;
+}
+
+.center{
+    text-align:center;
+}
+
+#result{
+    text-align:center;
+    font-size:20px;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- COVER PAGE -->
+<div id="cover">
+    <h1>Enter Your Name</h1>
+    <input type="text" id="username" placeholder="Your name">
+    <button onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<!-- QUIZ (UNCHANGED DESIGN) -->
+<div class="quiz-box" id="quizBox">
+
+<div class="timer" id="timer">Time: 30s</div>
+
+<h1>General Knowledge Quiz</h1>
+
+<form id="quizForm">
+
+<div class="question">
+<p><b>1. What is the capital of India?</b></p>
+<label><input type="radio" name="q1" value="Mumbai"> Mumbai</label><br>
+<label><input type="radio" name="q1" value="New Delhi"> New Delhi</label><br>
+<label><input type="radio" name="q1" value="Kolkata"> Kolkata</label><br>
+<label><input type="radio" name="q1" value="Chennai"> Chennai</label>
+</div>
+
+<div class="question">
+<p><b>2. Which planet is known as the Red Planet?</b></p>
+<label><input type="radio" name="q2" value="Earth"> Earth</label><br>
+<label><input type="radio" name="q2" value="Mars"> Mars</label><br>
+<label><input type="radio" name="q2" value="Venus"> Venus</label><br>
+<label><input type="radio" name="q2" value="Jupiter"> Jupiter</label>
+</div>
+
+<div class="question">
+<p><b>3. Who wrote "Romeo and Juliet"?</b></p>
+<label><input type="radio" name="q3" value="Charles Dickens"> Charles Dickens</label><br>
+<label><input type="radio" name="q3" value="William Shakespeare"> William Shakespeare</label><br>
+<label><input type="radio" name="q3" value="Mark Twain"> Mark Twain</label><br>
+<label><input type="radio" name="q3" value="Jane Austen"> Jane Austen</label>
+</div>
+
+<div class="question">
+<p><b>4. What is the largest ocean on Earth?</b></p>
+<label><input type="radio" name="q4" value="Atlantic Ocean"> Atlantic Ocean</label><br>
+<label><input type="radio" name="q4" value="Pacific Ocean"> Pacific Ocean</label><br>
+<label><input type="radio" name="q4" value="Indian Ocean"> Indian Ocean</label><br>
+<label><input type="radio" name="q4" value="Arctic Ocean"> Arctic Ocean</label>
+</div>
+
+<div class="question">
+<p><b>5. Which gas do plants absorb?</b></p>
+<label><input type="radio" name="q5" value="Oxygen"> Oxygen</label><br>
+<label><input type="radio" name="q5" value="Nitrogen"> Nitrogen</label><br>
+<label><input type="radio" name="q5" value="Carbon Dioxide"> Carbon Dioxide</label><br>
+<label><input type="radio" name="q5" value="Hydrogen"> Hydrogen</label>
+</div>
+
+<div class="center">
+<button type="submit">Submit Quiz</button>
+</div>
+
+</form>
+
+<div id="result"></div>
+
+</div>
+
+<script>
+
+let timeLeft = 30;
+let timer;
+
+function startQuiz(){
+    const name = document.getElementById("username").value.trim();
+
+    if(name === ""){
+        alert("Please enter your name");
+        return;
+    }
+
+    document.getElementById("cover").style.display = "none";
+    document.getElementById("quizBox").style.display = "block";
+
+    startTimer();
+}
+
+function startTimer(){
+    timer = setInterval(()=>{
+        timeLeft--;
+        document.getElementById("timer").innerText = "Time: " + timeLeft + "s";
+
+        if(timeLeft <= 0){
+            clearInterval(timer);
+            submitQuiz();
+        }
+    },1000);
+}
+
+document.getElementById("quizForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    submitQuiz();
+});
+
+function submitQuiz(){
+    clearInterval(timer);
+
+    let score = 0;
+
+    if(document.querySelector('input[name="q1"]:checked')?.value === "New Delhi") score++;
+    if(document.querySelector('input[name="q2"]:checked')?.value === "Mars") score++;
+    if(document.querySelector('input[name="q3"]:checked')?.value === "William Shakespeare") score++;
+    if(document.querySelector('input[name="q4"]:checked')?.value === "Pacific Ocean") score++;
+    if(document.querySelector('input[name="q5"]:checked')?.value === "Carbon Dioxide") score++;
+
+    document.getElementById("result").innerText = "Your Score: " + score + " / 5";
+}
+
+</script>
+
+</body>
+</html>
